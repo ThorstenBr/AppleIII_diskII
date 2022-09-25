@@ -1,0 +1,10 @@
+*.swp
+*.sch-bak
+*.kicad_pcb-bak
+*/OLD/*
+fp-info-cache
+Gerber/*.gbr
+Gerber/*.drl
+Gerber/*.gbrjob
+KiCad/AppleIIIFloppyEmu-backups/*
+
