@@ -11,9 +11,9 @@ This project is released under the "Creative Commons Attribution 4.0 Internation
 ## Description
 It doesn't take much to connect a FloppyEmu to an Apple III. The disk drive interface of the Apple III is very similar to the Apple II - with most signals being completely identical. The Apple III, however, has a few extra signals and features, hence it uses a wider 26pin connector, instead of the 20pin connector of the Apple II. The extra pins are not required for normal operation.
 
-You could make the connection between Apple III and FloppyEmu/DiskII with a simple ribbon cable: using a 26pin IDC connector at one end, and a 20pin IDC connector (stripping the top 6 wires) at the other end. That would already work (if you don't mess up, reverse the connectors or strip wires from the wrong side, that is...).
+You could make the connection between Apple III and FloppyEmu/DiskII with a simple ribbon cable: using a 26pin IDC connector at one end, and a 20pin IDC connector (stripping the top 6 wires) at the other end. That would already work (if you don't mess up, reverse the connectors or strip wires from the wrong side, that is...). You can find more on this in [Steve's (BMOW) blog post](https://www.bigmessowires.com/2017/01/25/floppy-emu-on-the-apple-iii/).
 
-However, such a 26pin to 20pin cable was too incovenient to me. It would require me to swap cables, forcing me to disassemble my FloppyEmu enclosure every time, I wanted to switch between using it at an Apple II or Apple III.
+However, such a 26pin to 20pin cable was too incovenient to me. It would require me to swap cables, forcing me to disassemble my FloppyEmu enclosure every time I wanted to switch between using it at an Apple II or Apple III.
 Likewise, I'd have to disassemble the Disk II enclosure, if I wanted to connect it as an external drive to my Apple III.
 Also, such a cable would only support a single drive - and couldn't support FloppyEmu's "dual drive emulation" feature.
 
@@ -103,8 +103,28 @@ Make sure the Apple III is switched off.
 * Connect the adapter to the external floppy port at the rear of your Apple III (26pin ribbon cable required). Alternatively, connect it to the internal floppy port: pull the 26pin ribbon cable from the internal disk drive and plug it into the adapter.
 * Finally connect disk II's or FloppyEmu's ribbon cable to the adapter.
 
-
 ![AppleIIIWithFloppyEmu](/Images/AppleIII_floppy_emu.jpg)
+
+### Configuring the System for Three Drives
+
+If you connect the FloppyEmu to the external connector, your system has three drives (the internal disk drive, and two external drives emulated by FloppyEmu).
+However, with Apple's "SOS" operating system it is necessary to configure the system to make the third drive work (in case it is configured to two drives only).
+
+Here are some hints on how to configure the Apple III:
+
+* Use the "system utilities" disk.
+* Enter the "System Configuration Program (SCP)".
+* Select "Read a Driver File" to read ".D1/sos.driver".
+* Select "Change System Parameters".
+* Set "Number of Disk III Drives" to 3 (or 4...).
+* Select "Generate New System" and write the new configuration to ".D1/sos.driver"
+
+Yes, the configuration of the Apple III is rather inconvenient. :)
+And make sure you have a backup of your boot disk, before you reconfigure anything.
+
+![Apple SCP - generate new system](/Images/AppleIII_scp_generate_system.jpg)
+
+![Apple SCP - change number of drives](/Images/AppleIII_scp_change_drives.jpg)
 
 ## Schematics and KiCad Project
 The [KiCad](/KiCad/) folder contains the schematics and PCB project files, if you wished to adapt the design.
