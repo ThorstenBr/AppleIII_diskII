@@ -5,6 +5,9 @@ The adapter works with either the internal or external floppy port of the Apple 
 
 ![Apple III FloppyEmu adapter PCB](/Images/Adapter_pcb.jpg)
 
+As a bonus I also added a design file for a 3D-printed slim enclosure:
+![Apple III to Disk II adapter: 3D print](/Images/AppleIII_diskII_adapter_3Dprint.jpg)
+
 ## License
 This project is released under the "Creative Commons Attribution 4.0 International Public License". See [LICENSE](/LICENSE).
 
@@ -96,9 +99,7 @@ There are three solder jumpers on the bottom side of the adapter:
 ![Jumpers on the Apple III disk II adapter](/Images/AppleIII_adapter_jumper.png)
 
 ## Installation
-Make sure the Apple III is switched off.
-
-**DO NOT CONNECT THE ADAPTER, THE DISK II or FLOPPY EMU WHILE YOUR MACHINE IS POWERED!**
+Make sure the Apple III is switched off. **Do not connect the adapter, the Disk II, or Floppy Emu while your machine is powered!**
 
 * Connect the adapter to the external floppy port at the rear of your Apple III (26pin ribbon cable required). Alternatively, connect it to the internal floppy port: pull the 26pin ribbon cable from the internal disk drive and plug it into the adapter.
 * Finally connect disk II's or FloppyEmu's ribbon cable to the adapter.
@@ -108,19 +109,19 @@ Make sure the Apple III is switched off.
 ### Configuring the System for Three Drives
 
 If you connect the FloppyEmu to the external connector, your system has three drives (the internal disk drive, and two external drives emulated by FloppyEmu).
-However, with Apple's "SOS" operating system it is necessary to configure the system to make the third drive work (in case it is configured to two drives only).
+However, with Apple's "SOS" operating system it is necessary to configure the system to make the third drive work (if your system was previously configured for two drives only).
 
 Here are some hints on how to configure the Apple III:
 
 * Use the "system utilities" disk.
 * Enter the "System Configuration Program (SCP)".
-* Select "Read a Driver File" to read ".D1/sos.driver".
+* Select "Read a Driver File" to read ".D1/sos.driver" from your boot disk.
 * Select "Change System Parameters".
 * Set "Number of Disk III Drives" to 3 (or 4...).
-* Select "Generate New System" and write the new configuration to ".D1/sos.driver"
+* Select "Generate New System" and write the new configuration to ".D1/sos.driver" of your boot disk.
 
-Yes, the configuration of the Apple III is rather inconvenient. :)
-And make sure you have a backup of your boot disk, before you reconfigure anything.
+Yes, changing the configuration of the Apple III SOS is a bit inconvenient. :)
+And make sure you have a backup of your boot disk, before you reconfigure anything...
 
 ![Apple SCP - generate new system](/Images/AppleIII_scp_generate_system.jpg)
 
@@ -130,4 +131,11 @@ And make sure you have a backup of your boot disk, before you reconfigure anythi
 The [KiCad](/KiCad/) folder contains the schematics and PCB project files, if you wished to adapt the design.
 
 ![Schematics of the adapter](/Images/AppleIII_diskII_adapter_schematics.png)
+
+## Bonus: 3D-printed enclosure
+As a bonus, I also added a design for a 3D-printed enclosure.
+It's a neat slim box which completely covers the PCB - eliminating any risk of creating short-circuits.
+You'll find the 3D file (.stl) in the [/3DPrint](/3DPrint/) folder.
+
+![Apple III to Disk II adapter: 3D print](/Images/AppleIII_diskII_adapter_3Dprint.jpg)
 
