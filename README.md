@@ -102,9 +102,13 @@ There are three solder jumpers on the bottom side of the adapter:
 Make sure the Apple III is switched off. **Do not connect the adapter, the Disk II, or Floppy Emu while your machine is powered!**
 
 * Connect the adapter to the external floppy port at the rear of your Apple III (26pin ribbon cable required). Alternatively, connect it to the internal floppy port: pull the 26pin ribbon cable from the internal disk drive and plug it into the adapter.
-* Finally connect disk II's or FloppyEmu's ribbon cable to the adapter.
+* Finally connect the FloppyEmu's ribbon cable to the adapter. The FloppyEmu cable has a keyed connector (with a notch), so it should only fit in correct orientation.
 
 ![AppleIIIWithFloppyEmu](/Images/AppleIII_floppy_emu.jpg)
+
+* Alternatively, when you use the adapter to connect a Disk II drive, be extra careful: the Disk II connectors do not have a notch preventing incorrect orientation. You can easily plug them reversed, which will damage the drive and/or interface card. Pin 1 is marked with a little triangle on the PCB, on the 3D-printed enclosure - and also on the disk II connector.
+
+![AppleIIIWithFloppyEmu](/Images/AppleIII_diskII_adapter_orientation.jpg)
 
 ### Configuring the System for Three Drives
 
@@ -134,8 +138,9 @@ The [KiCad](/KiCad/) folder contains the schematics and PCB project files, if yo
 
 ## Bonus: 3D-printed enclosure
 As a bonus, I also added a design for a 3D-printed enclosure.
-It's a neat slim box which completely covers the PCB - eliminating any risk of creating short-circuits.
+It's a neat and slim box which completely covers the PCB - eliminating any risk of creating short-circuits (remember the bottom side of the PCB has +/-12V and +5V voltage pins - so it's a good idea to cover them).
 You'll find the 3D file (.stl) in the [/3DPrint](/3DPrint/) folder.
 
+![Apple III to Disk II adapter: 3D print](/Images/AppleIII_diskII_adapter_3Dprint2.jpg)
 ![Apple III to Disk II adapter: 3D print](/Images/AppleIII_diskII_adapter_3Dprint.jpg)
 

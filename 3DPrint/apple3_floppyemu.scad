@@ -4,6 +4,10 @@
 // Which part do you want to see?
 part = "bottom"; // [all:All,both:Both,bottom:Bottom,top:Top,prototype:Prototype,test:Test,lid:Lid]
 
+// Add connector labels?
+connector_labels = "no"; // [no:No,yes:Yes]
+
+
 // Show PCB?
 show_pcb = "no"; // [no:No,yes:Yes]
 
@@ -48,28 +52,37 @@ include <baseLib.scad>
 
 module logo(x,y,z)
 {
- Font = "Liberation Sans";
- FontSize = 3;
+ Font = "Liberation Sans:style=Bold";
+ FontSize = 4;
  translate([x,y,z])
  {
-   translate([0,0,2])
-     rotate([90,0,180]) linear_extrude(height = 0.4) text("T.Brehm", font = Font, size = FontSize, halign="center", valign="center");
-   translate([0,0,-2])
-     rotate([90,0,180]) linear_extrude(height = 0.4) text("10/2022", font = Font, size = FontSize-1, halign="center", valign="center");
+   translate([0,0,2.2])
+     rotate([90,0,180]) linear_extrude(height = 0.5) text("T.Brehm", font = Font, size = FontSize, halign="center", valign="center");
+   translate([0,0,-2.2])
+     rotate([90,0,180]) linear_extrude(height = 0.5) text("10/2022", font = Font, size = FontSize-1, halign="center", valign="center");
  }
 }
 
-module marker(x,y,z, h)
+module marker(x,y,z,h,txt)
 {
  Font = "Liberation Sans";
- FontSize = 2;
+ FontSize=2;
  translate([x,y,z])
  rotate([90,180,180])
  {
-   linear_extrude(height = h) { text("▲", font = Font, size = FontSize); }
+   linear_extrude(height = h) text(txt, font = Font, size = FontSize, halign="center");
  }
 }
 
+module label(x,y,z,h,txt,FontSize)
+{
+ Font = "Arial:style=Bold";
+ translate([x,y,z])
+ rotate([90,0,180])
+ {
+   linear_extrude(height = h) text(txt, font = Font, size = FontSize, halign="center");
+ }
+}
 
 
 module pcb()
@@ -91,8 +104,14 @@ module boxOpenings()
 {
 	// circuit board
 	pcb();
-	marker(5+3,BoxY_Height+1-0.4,BoxZ_Depth-3.4,0.4);
-	marker(5+3,BoxY_Height+1-0.4,20-1,0.4);
+	marker(5+3,BoxY_Height+1-0.4,BoxZ_Depth-3.4,0.4, "▲");
+	marker(5+3,BoxY_Height+1-0.4,20-1,0.4, "▲");
+
+	if (connector_labels == "yes")
+	{
+		label(BoxX_Width/2,BoxY_Height+1-0.4,BoxZ_Depth-4.5,0.4, "APPLE III",3.5);
+		label(ConnectorWidth1/2+5,BoxY_Height+1-0.4,3-0.4,  0.4, "D II  /  FEMU",3.5);
+	}
 }
 
 module box(SkinWidth, XWidth, YHeight, ZDepth, CornerRadius)
@@ -173,7 +192,7 @@ module makeBottom()
 				translate([-SKIN*2, -(BoxY_Height+SKIN*2), -SKIN*2]) cube([BoxX_Width+SKIN*4, BoxY_Height+SKIN*2, BoxZ_Depth+SKIN*4]);
 			}
 			makeLedge();
-			logo(BoxX_Width/2,-2,BoxZ_Depth/2);
+			logo(BoxX_Width/2,-2.1,BoxZ_Depth/2);
 		}
 		makeTop();
 		locks(1.7, 1);
@@ -202,7 +221,7 @@ module main() {
     } else
     if (part == "both") {
         makeTop();
-	translate([0,3,-5]) rotate([180,0,0]) makeBottom();
+	translate([0,3,-7]) rotate([180,0,0]) makeBottom();
     } else {
         // all
         makeThing();
