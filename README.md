@@ -3,7 +3,10 @@ This project decribes how to build an adapter connecting an Apple III to a [Flop
 Alternatively, the adapter can also be used to connect the Apple III to an original Apple **Disk II** drive (yes, Disk II, not Disk III).
 The adapter works with either the internal or external floppy port of the Apple III.
 
+<!--
 ![Apple III FloppyEmu adapter PCB](/Images/Adapter_pcb.jpg)
+-->
+![Completed PCB with orientation of the box headers](/Images/AppleIIIFloppyEmu_front.png)
 
 As a bonus I also added a design file for a 3D-printed slim enclosure:
 ![Apple III to Disk II adapter: 3D print](/Images/AppleIII_diskII_adapter_3Dprint.jpg)
@@ -12,16 +15,15 @@ As a bonus I also added a design file for a 3D-printed slim enclosure:
 This project is released under the "Creative Commons Attribution 4.0 International Public License". See [LICENSE](/LICENSE).
 
 ## Description
-It doesn't take much to connect a FloppyEmu to an Apple III. The disk drive interface of the Apple III is very similar to the Apple II - with most signals being completely identical. The Apple III, however, has a few extra signals and features, hence it uses a wider 26pin connector, instead of the 20pin connector of the Apple II. The extra pins are not required for normal operation.
+It doesn't take much to connect a FloppyEmu to an Apple III. The disk drive interface of the Apple III is very similar to the Apple II - with most signals being completely identical. The Apple III, however, has a few extra signals and features, hence it uses a wider 26pin connector, instead of the 20pin connector of the Apple II. Most extra pins are not required for normal operation.
 
-You could make the connection between Apple III and FloppyEmu/DiskII with a simple ribbon cable: using a 26pin IDC connector at one end, and a 20pin IDC connector (stripping the top 6 wires) at the other end. That would already work (if you don't mess up, reverse the connectors or strip wires from the wrong side, that is...). You can find more on this in [Steve's (BMOW) blog post](https://www.bigmessowires.com/2017/01/25/floppy-emu-on-the-apple-iii/).
+A few people have made the connection between Apple III and FloppyEmu/DiskII with a simple ribbon cable: using a 26pin IDC connector at one end, and a 20pin IDC connector (stripping the top 6 wires) at the other end. That did mostly work (if you don't mess up, reverse the connectors or strip wires from the wrong side, that is...). You can find more on this in [Steve's (BMOW) blog post](https://www.bigmessowires.com/2017/01/25/floppy-emu-on-the-apple-iii/).
 
-However, such a 26pin to 20pin cable was too incovenient to me. It would require me to swap cables, forcing me to disassemble my FloppyEmu enclosure every time I wanted to switch between using it at an Apple II or Apple III.
-Likewise, I'd have to disassemble the Disk II enclosure, if I wanted to connect it as an external drive to my Apple III.
-Also, such a cable would only support a single drive - and couldn't support FloppyEmu's "dual drive emulation" feature.
+**However**, such a simple 26pin to 20pin cable is not to be recommended - and it will not always work. For proper operation, one of the additional signals also has to be considered (see the "errata" section below, if you are interested in the details).
 
-So, instead, I designed this little adapter.
-It can be connected to the Apple III disk port (internal or external port) and provides a standard 20pin connector, which can be used directly with the original FloppyEmu/Disk II cables.
+This adapter uses a cheap logic IC (74LS32) to properly decode the Apple /// drive enable signals and provide a signal to FloppyEmu or disk II. When connected to a FloppyEmu, the adapter also supports its "dual drive emulation" feature, where it emulates two separate disk drives.
+
+The adapter can be connected to the Apple III disk port (internal or external port) and provides a standard 20pin connector, which can be used directly with the original FloppyEmu/Disk II cables.
 
 ### Using the Apple III external floppy port
 You can connect the adapter to the external floppy port at the rear of your Apple III.
@@ -49,10 +51,14 @@ If you connect a new cable to the mainboard: the internal port is located on the
 Parts list for the completed PCB:
 * 1x 20pin box header
 * 1x 26pin box header
+* 1x 14pin DIP socket (recommended)
+* 1x IC SN74LS32 or SN74HCT32 (OR-Gate)
 * 1x 470 Ohm resistor
 * PCB (see Gerber files below)
 
+<!--
 ![Adapter parts list](/Images/Adapter_parts_list.jpg)
+-->
 
 Additionally, if you wanted to use Apple III's external floppy port, you may need a short 26pin ribbon cable with appropriate IDC sockets.
 * 2x 26-pin IDC socket (with strain relief)
@@ -130,6 +136,17 @@ And make sure you have a backup of your boot disk, before you reconfigure anythi
 ![Apple SCP - generate new system](/Images/AppleIII_scp_generate_system.jpg)
 
 ![Apple SCP - change number of drives](/Images/AppleIII_scp_change_drives.jpg)
+
+## Errata / Technical Background ##
+As described above, a number of people have made adapters by simply stripping away the 6 additional signals from the wider Apple III connector, and connect the 20 identical signals to a FloppyEmu/Disk II (in fact: the first version of the adapter in this project also followed this basic approach).
+
+This will mostly work - when each drive is used individually. However, the Apple /// has a feature, which Apple IIs do not have: the Apple /// disk drive logic is able to keep the motor of the internal disk drive **and** one external disk drive spinning concurrently. This significantly speeds up the performance when copying data between internal and external disks - or when quickly reading files from both drives. The computer is no longer delayed by waiting for drive to reach their target rotation speed, when the drives keep spinning concurrently.
+
+This feature is used on the Apple ///, for example, when using the "volume copy" feature of "SOS system utilties". While copying an entire disk, it keeps both drives spinning, while reading data from one disk and immediately writing it to the other. Disk copying is therefore much faster on the Apple III than on an Apple II (where the computer again and again needs to briefly wait while the two drives spin up and down).
+
+This feature is implemented by Apple /// by keeping the *enable signals* for the internal and one of the external drives both enabled. These signals are at the same pin location as the respective signals of Apple II drives. However, on the Apple II it is forbidden for more than one drive to be enabled concurrently, since this would result in a conflict on the other shared communication signals. On the Apple II these signals meant "*enable motor **and** communication*". The Apple ///, however, has an additional signal on its 26pin port, which selects between internal and external communication. The disk enable signal on the Apple III only means "*enable motor*" - and therefore allows more than one drive to be enabled (spinning) at the same time. Still, communication always takes place with one drive only, when *additionally* an extra signal on the 26pin connector selects the internal port (or external port, respectively).
+
+This adapter uses a simple 74LS32 logic IC (OR-gate), which properly considers all Apple III disk enable signals - and provides the correct signal to FloppyEmu (or disk II).
 
 ## Schematics and KiCad Project
 The [KiCad](/KiCad/) folder contains the schematics and PCB project files, if you wished to adapt the design.
