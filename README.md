@@ -72,17 +72,8 @@ If you make your own ribbon cable: **MAKE SURE THE IDC SOCKETS ARE ORIENTED CONS
 
 For the internal floppy port you can reuse the existing floppy cable of your Apple III (unplug the internal floppy and plug the cable into the adapter instead).
 
-I ordered parts from my usual German electronics online shop for less than a buck (add a few bucks if you need a new ribbon cable).
+I ordered parts from my usual German electronics online shop for less than a buck. Add a few bucks if you need a new ribbon cable ([Shopping List at Reichelt.de](https://www.reichelt.de/my/1980987?LANGUAGE=EN)).
 I created a public shopping list containing all the parts. All parts are extremely common and will be available for a long time.
-
-[Shopping List at Reichelt.de](https://www.reichelt.de/my/1980987?LANGUAGE=EN):
-* 1x WSL 20G
-* 1x WSL 26G
-* 1x 1/4W 470
-
-Optional (extra cable for external floppy port):
-* 2x PFL 26
-* 1x AWG 28-26G 3M
 
 ## Gerber Files, Ordering a PCB
 If you wished to directly order a PCB (PCBWay, JLCPCB etc) you could use the latest Gerber files from the [Gerber](/Gerber/) directory. Just upload the ZIP file to your preferred PCB manufacturer and order the PCB. My PCBs were manufactured by JLCPCB (using the cheapest options, I got mine already after about 1.5 weeks for a few bucks/Euros).
@@ -93,6 +84,8 @@ Soldering is straight forward. Only simple through-hole components are used. All
 **DOUBLE-CHECK THE PROPER ORIENTATION OF THE BOX HEADERS!**  
 The notch for the box headers are clearly marked on the PCB.
 Incorrect orientation of the box headers for the Apple III or FloppyEmu port will damage or destroy your Apple III and FloppyEmu/disk II drive - or both...
+
+The capacitor (C1) was added on the PCB as a backup. It is not required (leave the slot unused).
 
 ![Completed PCB with orientation of the box headers](/Images/AppleIIIFloppyEmu_front.png)
 
