@@ -3,10 +3,7 @@ This project decribes how to build an adapter connecting an Apple III to a [Flop
 Alternatively, the adapter can also be used to connect the Apple III to an original Apple **Disk II** drive (yes, Disk II, not Disk III).
 The adapter works with either the internal or external floppy port of the Apple III.
 
-<!--
 ![Apple III FloppyEmu adapter PCB](/Images/Adapter_pcb.jpg)
--->
-![Completed PCB with orientation of the box headers](/Images/AppleIIIFloppyEmu_front.png)
 
 As a bonus I also added a design file for a 3D-printed slim enclosure:
 ![Apple III to Disk II adapter: 3D print](/Images/AppleIII_diskII_adapter_3Dprint.jpg)
