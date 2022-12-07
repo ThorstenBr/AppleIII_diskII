@@ -21,18 +21,20 @@ SKIN = 1.0; // [1: 0.1: 5]
 
 /* [Hidden] */
 
+PcbY_BottomClearance = 1.0;
+
 // PCB width
 PcbX_Width = 43.5;
 // PCB height
 PcbY_Height = 2.5;
 // PCB depth
-PcbZ_Depth = 35.5;
+PcbZ_Depth = 45;
 
 // Width (X) of the box
 BoxX_Width = PcbX_Width+6; // [10: 100]
 
 // Height (Y) of the box
-BoxY_Height = 8-1; // [5: 100]
+BoxY_Height = PcbY_BottomClearance+PcbY_Height+8; // [5: 100]
 
 // Depth (Z) of the box
 BoxZ_Depth = PcbZ_Depth+6; // [10: 200]
@@ -59,14 +61,14 @@ module logo(x,y,z)
    translate([0,0,2.2])
      rotate([90,0,180]) linear_extrude(height = 0.5) text("T.Brehm", font = Font, size = FontSize, halign="center", valign="center");
    translate([0,0,-2.2])
-     rotate([90,0,180]) linear_extrude(height = 0.5) text("10/2022", font = Font, size = FontSize-1, halign="center", valign="center");
+     rotate([90,0,180]) linear_extrude(height = 0.5) text("12/2022", font = Font, size = FontSize-1, halign="center", valign="center");
  }
 }
 
 module marker(x,y,z,h,txt)
 {
  Font = "Liberation Sans";
- FontSize=2;
+ FontSize=3;
  translate([x,y,z])
  rotate([90,180,180])
  {
@@ -76,36 +78,33 @@ module marker(x,y,z,h,txt)
 
 module label(x,y,z,h,txt,FontSize)
 {
- Font = "Arial:style=Bold";
- translate([x,y,z])
- rotate([90,0,180])
- {
-   linear_extrude(height = h) text(txt, font = Font, size = FontSize, halign="center");
- }
+	Font = "Arial:style=Bold";
+	translate([x,y,z])
+	rotate([90,0,180])
+	{
+		linear_extrude(height = h) text(txt, font = Font, size = FontSize, halign="center");
+	}
 }
-
 
 module pcb()
 {
-	translate([(BoxX_Width-PcbX_Width)/2,1,(BoxZ_Depth-PcbZ_Depth)/2])
+	translate([(BoxX_Width-PcbX_Width)/2,PcbY_BottomClearance,(BoxZ_Depth-PcbZ_Depth)/2])
 	{
 		cube([PcbX_Width, PcbY_Height, PcbZ_Depth]);
-		
-		translate([0,PcbY_Height,4])
+		translate([0,PcbY_Height,3.5])
 		{
-			translate([1.9-0.3,0,0]) cube([ConnectorWidth1, BoxY_Height*2, ConnectorDepth]);
-			translate([1.5,0,20-0.7]) cube([ConnectorWidth2, BoxY_Height*2, ConnectorDepth]);
+			translate([1.6,0,0])  cube([ConnectorWidth1, BoxY_Height*2, ConnectorDepth]);
+			translate([1.6,0,29]) cube([ConnectorWidth2, BoxY_Height*2, ConnectorDepth]);
 		}
 	}
-	
 }
 
 module boxOpenings()
 {
 	// circuit board
 	pcb();
-	marker(5+3,BoxY_Height+1-0.4,BoxZ_Depth-3.4,0.4, "▲");
-	marker(5+3,BoxY_Height+1-0.4,20-1,0.4, "▲");
+	marker(5+3,BoxY_Height+1-0.4,BoxZ_Depth-2.4,0.4, "▲");
+	marker(5+3,BoxY_Height+1-0.4,20-0.4,0.4, "▲");
 
 	if (connector_labels == "yes")
 	{
@@ -129,6 +128,7 @@ module box(SkinWidth, XWidth, YHeight, ZDepth, CornerRadius)
 module makeThing()
 {
 	XOfs = 2;
+	YOfs = 5.5;
 	translate([0,-2,0])
 	difference()
 	{
@@ -137,9 +137,15 @@ module makeThing()
 			box(SKIN, BoxX_Width, BoxY_Height, BoxZ_Depth, Box_Corner_Radius);
 			translate([XOfs,0,1]) cube([2,BoxY_Height,4]);
 			translate([BoxX_Width-XOfs-2,0,1]) cube([2,BoxY_Height,4]);
-			
+
 			translate([XOfs,0,BoxZ_Depth-4-1]) cube([2,BoxY_Height,4]);
 			translate([BoxX_Width-XOfs-2,0,BoxZ_Depth-4-1]) cube([2,BoxY_Height,4]);
+
+			translate([XOfs,YOfs,0]) cube([2,BoxY_Height-YOfs,4]);
+			translate([BoxX_Width-XOfs-2,YOfs,0]) cube([2,BoxY_Height-YOfs,4]);
+
+			translate([XOfs,YOfs,BoxZ_Depth-4]) cube([2,BoxY_Height-YOfs,4]);
+			translate([BoxX_Width-XOfs-2,YOfs,BoxZ_Depth-4]) cube([2,BoxY_Height-YOfs,4]);
 		}
 		boxOpenings();
 	}
@@ -221,7 +227,7 @@ module main() {
     } else
     if (part == "both") {
         makeTop();
-	translate([0,3,-7]) rotate([180,0,0]) makeBottom();
+	translate([0,7.5,-7]) rotate([180,0,0]) makeBottom();
     } else {
         // all
         makeThing();
